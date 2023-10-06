@@ -1,0 +1,184 @@
+Install Arch Linux i3
+
+Chek efisystem
+efivar -l
+
+connect wifi
+iwctl
+device list
+station wlanX scan
+station wlanX get-networks
+station wlanX connect SSID
+station wlanX show
+exit
+timedatectl set-ntp true
+======
+cfdisk
+wipefs -a /dev/sda
+sgdisk -Z /dev/sda
+=======
+Formating
+
+
+mkfs.fat -F 32 /dev/sda1
+mkswap /dev/sda2
+mkfs.ext4 -L root /dev/sda3
+mkfs.ext4 -L home /dev/sda4
+Mounting
+swapon /dev/sda2
+mount /dev/sda3 /mnt
+mkdir -p /mnt/boot/efi+++
+++++=======>>>>>jika menggunakan systemd-boot dev/sdaZ /mnt/boot
+mkdir -p /mnt/home
+mount /dev/sda1 /mnt/boot/efi
+mount /dev/sda4 /mnt/home
+
+pacman -S arch-keyring
+pacman-key --init
+pacman-key --populate archlinux
+
+Base Instalation
+pacstrap /mnt base base-devel linux linux-firmware vim intel-ucode
+
+generate fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+change root
+arch-chroot /mnt
+
+make swap file
+for ext4
+dd if=/dev/zero of=/swapfile bs=XG count=2 status=progress
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+for btrfs
+touch /swapfile
+chmod 600 /swapfile
+chattr +C /swapfile
+lsattr /swapfile
+sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress
+mkswap /swapfile
+swapon /swapfile
+terus, ketik
+nano /etc/fstab
+dan isikan
+/swapfile none swap defaults 0 0
+
+nano /etc/sysctl.conf
+vm.swappiness=10
+
+Install Paket Yang dibutuhkan
+pacman -S networkmanager net-tools wpa_supplicant --needed
+pacman -S grub efibootmgr os-prober --needed
+pacman -S man-db --needed
+pacman -S xdg-user-dirs-gtk dosfstools ntfs-3g nfs udiskie usb_modeswitch --needed
+pacman -S upower --needed
+pacman -S mesa mesa-utils --needed
+pacman -S gvfs gvfs-mtp --needed
+
+install graphic Nvidia open driver
+pacman -S  xf86-video-nouveau --needed
+
+install xorg
+pacman -S xorg-server xorg-xinit xorg-xset xorg-xrandr xorg-xwininfo xorg-xsetroot --needed
+
+install boot loader
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+
+pacman -S ttf-firacode-nerd ttf-hack ttf-terminus-nerd ttf-ubuntu-font-family awesome-terminal-fonts 
+noto-fonts cantarell-fonts ttf-bitstream-vera ttf-dejavu ttf-liberation ttf-opensans --needed
+pacman -S git
+pacman -S bluez bluez-utils 
+pacman -S gst-plugin-pipewire pipewire pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse wireplumber alsa-utils --needed
+
+Mengatur Zona Waktu
+ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+hwclock --systohc --utc
+
+Time syncronization
+systemctl enable systemd-timesyncd
+
+Membuat hostname
+nano /etc/hostname
+
+Generate Locale
+nano /etc/locale.gen
+hapus # pada en_US
+nano /etc/locale.conf
+Lang=en_US.UTF-8
+LC_COLLATE=C
+LC_TIME=id_ID.UTF-8
+Terus ketik locale-gen
+
+Membuat File hosts
+nano /etc/hosts
+127.0.0.1    localhost
+::1   	     localhost
+127.0.0.1    ganteng.localdomain ganteng
+
+Update Grub
+grub-mkconfig -o /boot/grub/grub.cfg
+mkinitcpio -P
+
+Membuat Password root
+Passwd
+
+menambah user dan memberi password pada user
+useradd -mG wheel bjo
+
+Mengaktifkan sudo
+usermod -aG wheel bjo
+EDITOR=nano visudo
+hapus # %wheel%
+passwd bjo
+
+systemctl enable Networkmanager && systemctl enable bluetooth
+
+exit
+umount -R /mnt
+reboot
+login
+
+
+
+install yay
+cd Downloads
+git clone http://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+
+
+
+install i3
+pacman -S i3
+
+install dmenu
+pacman -S j4-dmenu-dekstop
+pacman -S tumbler ffmpeg ffmpegthumbnailer
+pacman -S i3 
+pacman -S alacritty 
+pacman -S pcmanfm lxappearance-gtk3 leafpad 
+pacman -S nitrogen viewnior galculator 
+pacman -S dunst imwheel xclip maim picom neofetch picom ranger
+pacman -S ueberzug
+pacman -S polkit-gnome
+pacman -S pavucontrol
+pacman -S gufw
+pacman -S imagemagick
+pacman -S numlockx
+pacman -S xarchiver zip unzip unrar p7zip --needed
+pacman -S xdotool 
+
+paket yay
+==========
+autotiling 
+dmenu-bluetooth 
+i3exit 
+networkmanager-dmenu-bluetoothfix-git 
+ttf-material-design-icons-extended 
+vimix-cursors 
+vimix-gtk-themes-git 
+vimix-icon-theme 
+yay-git 
+
