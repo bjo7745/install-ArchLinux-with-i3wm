@@ -168,7 +168,7 @@ pacman -S gufw
 pacman -S imagemagick
 pacman -S numlockx
 pacman -S xarchiver zip unzip unrar p7zip --needed
-pacman -S xdotool 
+pacman -S xdotool wmctrl
 
 paket yay
 ==========
