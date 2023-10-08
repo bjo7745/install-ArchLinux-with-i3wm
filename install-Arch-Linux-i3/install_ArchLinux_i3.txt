@@ -48,7 +48,7 @@ arch-chroot /mnt
 
 make swap file
 for ext4
-dd if=/dev/zero of=/swapfile bs=XG count=2 status=progress
+dd if=/dev/zero of=/swapfile bs=2G count=2 status=progress
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
