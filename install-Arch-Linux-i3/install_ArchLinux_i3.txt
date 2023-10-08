@@ -38,7 +38,7 @@ pacman-key --init
 pacman-key --populate archlinux
 
 Base Instalation
-pacstrap /mnt base base-devel linux linux-firmware vim intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware neovim intel-ucode
 
 generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -61,18 +61,18 @@ sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress
 mkswap /swapfile
 swapon /swapfile
 terus, ketik
-nano /etc/fstab
+nvim /etc/fstab
 dan isikan
 /swapfile none swap defaults 0 0
 
-nano /etc/sysctl.conf
+nvim /etc/sysctl.conf
 vm.swappiness=10
 
 Install Paket Yang dibutuhkan
 pacman -S networkmanager net-tools wpa_supplicant --needed
 pacman -S grub efibootmgr os-prober --needed
 pacman -S man-db --needed
-pacman -S xdg-user-dirs-gtk dosfstools ntfs-3g nfs udiskie usb_modeswitch --needed
+pacman -S xdg-user-dirs-gtk xdg-utils dosfstools ntfs-3g nfs-utils udiskie usb_modeswitch --needed
 pacman -S upower --needed
 pacman -S mesa mesa-utils --needed
 pacman -S gvfs gvfs-mtp --needed
@@ -99,7 +99,7 @@ Time syncronization
 systemctl enable systemd-timesyncd
 
 Membuat hostname
-nano /etc/hostname
+nvim /etc/hostname
 
 Membuat Password root
 Passwd
@@ -109,21 +109,21 @@ useradd -mG wheel bjo
 
 Mengaktifkan sudo
 usermod -aG wheel bjo
-EDITOR=nano visudo
+EDITOR=nvim visudo
 hapus # %wheel%
 passwd bjo
 
 Generate Locale
-nano /etc/locale.gen
+nvim /etc/locale.gen
 hapus # pada en_US
-nano /etc/locale.conf
+nvim /etc/locale.conf
 Lang=en_US.UTF-8
 LC_COLLATE=C
 LC_TIME=id_ID.UTF-8
 Terus ketik locale-gen
 
 Membuat File hosts
-nano /etc/hosts
+nvim /etc/hosts
 127.0.0.1    localhost
 ::1   	     localhost
 127.0.0.1    ganteng.localdomain ganteng
@@ -179,4 +179,5 @@ vimix-gtk-themes-git
 vimix-icon-theme 
 yay-git 
 icat
+bashmount
 
