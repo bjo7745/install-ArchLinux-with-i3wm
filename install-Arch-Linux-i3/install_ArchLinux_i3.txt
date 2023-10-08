@@ -86,8 +86,7 @@ pacman -S xorg-server xorg-xinit xorg-xset xorg-xrandr xorg-xwininfo xorg-xsetro
 install boot loader
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
-pacman -S ttf-firacode-nerd ttf-hack ttf-terminus-nerd ttf-ubuntu-font-family awesome-terminal-fonts 
-noto-fonts cantarell-fonts ttf-bitstream-vera ttf-dejavu ttf-liberation ttf-opensans --needed
+pacman -S ttf-firacode-nerd ttf-hack ttf-terminus-nerd ttf-ubuntu-font-family awesome-terminal-fonts noto-fonts cantarell-fonts ttf-bitstream-vera ttf-dejavu ttf-liberation ttf-opensans ttf-jetbrains-mono ttf-jetbrains-mono-nerd --needed
 pacman -S git
 pacman -S bluez bluez-utils 
 pacman -S gst-plugin-pipewire pipewire pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse wireplumber alsa-utils --needed
@@ -101,6 +100,18 @@ systemctl enable systemd-timesyncd
 
 Membuat hostname
 nano /etc/hostname
+
+Membuat Password root
+Passwd
+
+menambah user dan memberi password pada user
+useradd -mG wheel bjo
+
+Mengaktifkan sudo
+usermod -aG wheel bjo
+EDITOR=nano visudo
+hapus # %wheel%
+passwd bjo
 
 Generate Locale
 nano /etc/locale.gen
@@ -121,17 +132,7 @@ Update Grub
 grub-mkconfig -o /boot/grub/grub.cfg
 mkinitcpio -P
 
-Membuat Password root
-Passwd
 
-menambah user dan memberi password pada user
-useradd -mG wheel bjo
-
-Mengaktifkan sudo
-usermod -aG wheel bjo
-EDITOR=nano visudo
-hapus # %wheel%
-passwd bjo
 
 systemctl enable Networkmanager && systemctl enable bluetooth
 
@@ -140,16 +141,6 @@ umount -R /mnt
 reboot
 login
 
-
-
-install yay
-cd Downloads
-git clone http://aur.archlinux.org/yay-bin.git
-cd yay-bin
-makepkg -si
-
-
-
 install i3
 pacman -S i3
 
@@ -157,8 +148,8 @@ install dmenu
 pacman -S j4-dmenu-dekstop
 pacman -S tumbler ffmpeg ffmpegthumbnailer
 pacman -S i3 
-pacman -S alacritty 
-pacman -S pcmanfm lxappearance-gtk3 leafpad 
+pacman -S kitty
+pacman -S thunar lxappearance-gtk3 leafpad 
 pacman -S nitrogen viewnior galculator 
 pacman -S dunst imwheel xclip maim picom neofetch picom ranger
 pacman -S ueberzug
@@ -169,6 +160,12 @@ pacman -S imagemagick
 pacman -S numlockx
 pacman -S xarchiver zip unzip unrar p7zip --needed
 pacman -S xdotool wmctrl
+
+install yay
+cd Downloads
+git clone http://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
 
 paket yay
 ==========
@@ -181,4 +178,5 @@ vimix-cursors
 vimix-gtk-themes-git 
 vimix-icon-theme 
 yay-git 
+icat
 
